@@ -1,7 +1,7 @@
 <?php
-include("class/DataRecord.php");
+include("class/Thread.php");
 
-$JSONLOC = "messages.json";
+$JSONLOC = "messages";
 $POSTTEMPLATELOC = "templates/postTemplate.html";
 $HEADTEMPLATELOC = "head.html";
 
@@ -14,7 +14,7 @@ if ($params['thread']) {
 
 $dataStorage = new DataRecord($JSONLOC);
 
-$pageTitle = ($currentThread ? "/test2 - Thread #$currentThread" : "/test2 board");
+$pageTitle = ($currentThread ? "/test2 - Thread #$currentThread" : "/test2 - Board");
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
 
 if ($currentThread) {
@@ -27,41 +27,26 @@ $buttonText = ($currentThread ? "/Assets/postpixel.png" : "/Assets/create_thread
 printf(file_get_contents("templates/postForm.html"), $buttonText);
 
 if ($_POST) {
-    $text = htmlspecialchars(print_r($_POST['message'], true));
     $username = htmlspecialchars(print_r($_POST['username'], true));
-    $dataStorage->appendNewPost(
-        $text, 
+    $text = htmlspecialchars(print_r($_POST['message'], true));
+    $post = new Post(
+        $dataStorage->getNextPostId($currentThread),
+        $text,
+        date('d.m.y h:i:s'),
+        $currentThread ? $currentThread : $dataStorage->getNextThreadId(),
         $username ? $username : 'Anonymous',
-        $currentThread ? $currentThread : $dataStorage->getNextThreadId()
     );
+    $dataStorage->appendNewPost($post);
 }
 
 if ($currentThread) {
-    $posts = $dataStorage->getPostsByThreadId($currentThread);
-    foreach ($posts as $post) {
-        $post->renderPost($POSTTEMPLATELOC);
-    }
+    $thread = new Thread($currentThread);
+    $thread->renderThread($POSTTEMPLATELOC);
 }
 
 if (!$currentThread) {
-    $threads = $dataStorage->getThreadList();
-    for ($i = 0; $i <= count($threads)-1; $i++) {
-        $threadId = $threads[$i];
-        $showcase = $dataStorage->createThreadShowcase($threadId);
-        $showcase['threadPosts'][0]->renderPost($POSTTEMPLATELOC);
-        if ($showcase['morePosts']) {
-            $more = $showcase['morePosts'];
-            echo "There is $more more posts";
-        }
-        if (count($showcase['threadPosts']) > 1) {
-            foreach (array_reverse(array_slice($showcase['threadPosts'], 1)) as $nextPost) {
-                $nextPost->renderPost($POSTTEMPLATELOC);
-            }
-        }
-        printf("<table><tr><th>
-        <a href='http://frenchan.zzz.com.ua/test2/?thread=%s'>Proceed to thread</a>
-        </th></tr></table>", 
-        $threadId);
-        echo "<hr>";
+    foreach ($dataStorage->getThreadListOrdByLastPost() as $threadId) {
+        $thread = new Thread($threadId);
+        $thread->renderShowcase($POSTTEMPLATELOC);
     }
 }
