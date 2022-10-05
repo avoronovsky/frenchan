@@ -20,17 +20,17 @@ class DataStorage {
     }
 
     public function getNextThreadId(): int {
-        $maxThread = sizeof($this->jsonList) > 0 ? max(array_keys($this->jsonList)) : 0;
+        $maxThread = sizeof($this->_jsonList) > 0 ? max(array_keys($this->_jsonList)) : 0;
         return $maxThread + 1;
     }
 
-    public function getNextPostId(int $threadId): int {
-        $data = array_key_exists($threadId, $this->_jsonList) ? 
-            $this->_getJsonValues($threadId) : 0;
-        return max(array_column($data, 'id')) + 1;
+    public function getNextPostId(): int {
+        $lastThreadId = $this->getThreadListOrdByLastPost()[0];
+        $lastPostId = end($this->getPostsByThreadId($lastThreadId))->id;
+        return $lastPostId + 1;
     }
 
-    public function appendPost(Post $post): void {
+    public function appendNewPost(Post $post): void {
         $posts = array();
         $threadExists = false;
         $threadId = $post->threadId;
@@ -53,7 +53,7 @@ class DataStorage {
         return $threadPosts;
     }
 
-    public function getThreadListOrdByLastPost() {
+    public function getThreadListOrdByLastPost(): array {
         foreach (array_keys($this->_jsonList) as $key) {
         }
         uasort($this->_jsonList, function($a, $b) {

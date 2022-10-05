@@ -27,14 +27,14 @@ class Thread {
             $nOfMore = $nOfPosts - 3;
             echo "$nOfMore more post(s)";
         }
-        if ($nOfPosts >= 2) {
-            $this->_threadPosts[$nOfPosts-1]->renderPost($templateLoc);
-        }
         if ($nOfPosts >= 3) {
             $this->_threadPosts[$nOfPosts-2]->renderPost($templateLoc);
         }
+        if ($nOfPosts >= 2) {
+            $this->_threadPosts[$nOfPosts-1]->renderPost($templateLoc);
+        }
         printf("<table><tr><th>
-        <a href='http://frenchan.zzz.com.ua/test2/?thread=%s'>Proceed to thread</a>
+        <a href='index.php?thread=%s'>Proceed to thread</a>
         </th></tr></table>", 
         $this->_threadId);
         echo "<hr>";

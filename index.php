@@ -7,12 +7,15 @@ $HEADTEMPLATELOC = "head.html";
 
 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $url_components = parse_url($url);
-parse_str($url_components['query'], $params);
+
+parse_str($url_components["query"], $params);
 if ($params['thread']) {
     $currentThread = $params['thread'];
 }
 
-$dataStorage = new DataRecord($JSONLOC);
+
+
+$dataStorage = new DataStorage($JSONLOC);
 
 $pageTitle = ($currentThread ? "/test2 - Thread #$currentThread" : "/test2 - Board");
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
@@ -29,24 +32,30 @@ printf(file_get_contents("templates/postForm.html"), $buttonText);
 if ($_POST) {
     $username = htmlspecialchars(print_r($_POST['username'], true));
     $text = htmlspecialchars(print_r($_POST['message'], true));
-    $post = new Post(
-        $dataStorage->getNextPostId($currentThread),
-        $text,
-        date('d.m.y h:i:s'),
-        $currentThread ? $currentThread : $dataStorage->getNextThreadId(),
-        $username ? $username : 'Anonymous',
-    );
-    $dataStorage->appendNewPost($post);
+
+    if (strlen($text) > 0 and strlen($text) < 2000 and strlen($username) < 32) {
+
+        $post = new Post(
+            $dataStorage->getNextPostId(),
+            $text,
+            date('d.m.y h:i:s'),
+            $currentThread ? $currentThread : $dataStorage->getNextThreadId(),
+            $username ? $username : 'Anonymous',
+        );
+        $dataStorage->appendNewPost($post);
+    }
+    header('Location: ' . $url, true, 303);
+    die();
 }
 
 if ($currentThread) {
-    $thread = new Thread($currentThread);
+    $thread = new Thread($currentThread, $dataStorage);
     $thread->renderThread($POSTTEMPLATELOC);
 }
 
 if (!$currentThread) {
     foreach ($dataStorage->getThreadListOrdByLastPost() as $threadId) {
-        $thread = new Thread($threadId);
+        $thread = new Thread($threadId, $dataStorage);
         $thread->renderShowcase($POSTTEMPLATELOC);
     }
 }
