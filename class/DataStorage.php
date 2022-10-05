@@ -54,11 +54,8 @@ class DataStorage {
     }
 
     public function getThreadListOrdByLastPost() {
-        echo "it was\n";
         foreach (array_keys($this->_jsonList) as $key) {
-            echo $key . " ";
         }
-        echo "\n";
         uasort($this->_jsonList, function($a, $b) {
             $ad = DateTime::createFromFormat('d.m.Y H:i:s',$a['date']);
             $bd = DateTime::createFromFormat('d.m.Y H:i:s',$b['date']);
@@ -67,13 +64,10 @@ class DataStorage {
               return 0;
             }
           
-            return $ad < $bd ? -1 : 1;
+            return $ad < $bd ? 1 : -1;
         });
-        echo "it is\n";
         foreach (array_keys($this->_jsonList) as $key) {
-            echo $key . " ";
         }
-        echo "\n";
         return array_keys($this->_jsonList);
     }
 
