@@ -34,7 +34,7 @@ class Thread {
             $this->_threadPosts[$nOfPosts-1]->renderPost($templateLoc);
         }
         printf("<table><tr><th>
-        <a href='index.php?thread=%s'>Proceed to thread</a>
+        <a href='thread/?id=%s'>Proceed to thread</a>
         </th></tr></table>", 
         $this->_threadId);
         echo "<hr>";
