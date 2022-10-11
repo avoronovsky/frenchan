@@ -1,7 +1,7 @@
 <?php
 include("../class/Thread.php");
 
-$JSONLOC = "../messages";
+//$JSONLOC = "../messages";
 $POSTTEMPLATELOC = "../templates/postTemplate.html";
 $HEADTEMPLATELOC = "../head.html";
 
@@ -13,7 +13,8 @@ if ($params['id']) {
     $currentThread = $params['id'];
 }
 
-$dataStorage = new DataStorage($JSONLOC);
+//$dataStorage = new DataStorage($JSONLOC);
+$dataStorage = new DataBase();
 
 $pageTitle = "Frenchan - Thread #$currentThread";
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
@@ -34,7 +35,7 @@ if ($_POST) {
         $post = new Post(
             $dataStorage->getNextPostId(),
             $text,
-            date('d.m.y h:i:s'),
+            date('Y.m.d H:i:s'),
             $currentThread,
             $username ? $username : 'Anonymous',
         );

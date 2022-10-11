@@ -1,5 +1,5 @@
 <?php
-require "DataStorage.php";
+require "DataBase.php";
 
 class Thread {
 
@@ -7,7 +7,7 @@ class Thread {
 
     private array $_threadPosts;
 
-    public function __construct(int $threadId, DataStorage $data) {
+    public function __construct(int $threadId, DataBase $data) {
         $this->_threadId = $threadId;
         $this->_threadPosts = $data->getPostsByThreadId($threadId);
     }

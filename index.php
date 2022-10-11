@@ -1,7 +1,7 @@
 <?php
 include("class/Thread.php");
 
-$JSONLOC = "messages";
+//$JSONLOC = "messages";
 $POSTTEMPLATELOC = "templates/postTemplate.html";
 $HEADTEMPLATELOC = "head.html";
 
@@ -10,7 +10,8 @@ $url_components = parse_url($url);
 
 parse_str($url_components["query"], $params);
 
-$dataStorage = new DataStorage($JSONLOC);
+//$dataStorage = new DataStorage($JSONLOC);
+$dataStorage = new DataBase();
 
 $pageTitle = "/ - Frenchan Board";
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
@@ -27,7 +28,7 @@ if ($_POST) {
         $post = new Post(
             $dataStorage->getNextPostId(),
             $text,
-            date('d.m.y h:i:s'),
+            date('Y.m.d H:i:s'),
             $dataStorage->getNextThreadId(),
             $username ? $username : 'Anonymous',
         );
