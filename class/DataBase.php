@@ -6,12 +6,9 @@ class DataBase {
 
     private MySQLi $_conn;
 
-    public function __construct(){
+    public function __construct(array $DATABASECREDS){
 
-        $servername = "localhost";
-        $username = "mundus";
-        $password = "pass";//"!QAsw2#EDfr4#@!";
-        $database = "mundus";
+        extract($DATABASECREDS, EXTR_PREFIX_SAME, "wddx");
 
         $this->_conn = new MySQLi($servername, $username, $password, $database);
     }
