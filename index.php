@@ -1,5 +1,6 @@
 <?php
-include("configs.php");
+
+include("./configs.php");
 include($POSTFORMCLASSLOC);
 include($THREADCLASSLOC);
 
@@ -14,8 +15,15 @@ $currentPage = $params['page'] ? $params['page'] : 0;
 
 $dataStorage = new DataBase($DATABASECREDS);
 
-$pageTitle = "/ - Frenchan Board";
+
+$pageTitle = "/uat - Frenchan";
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
+
+
+$cleanUrl = $currentPage > 0 ? strtok($url, '?') : "..";
+$navBarText = $currentPage > 0 ? "Back to 0" : "Back to main";
+echo "<a href=$cleanUrl>$navBarText</a>";
+echo "<hr>";
 
 if (count($dataStorage->getThreadListOrdByLastPost()) < $currentPage * $PAGINATIONSTEP) {
     echo 'Out of range'; //it's supposed to be done better

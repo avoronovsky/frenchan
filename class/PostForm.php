@@ -11,7 +11,6 @@ class PostForm {
     }
 
     public function renderForm($POSTFORMTEMPLATELOC) {
-        $buttonText = $this->_threadId ? "Assets/postpixel.png" : "Assets/create_thread.png";
         printf(file_get_contents($POSTFORMTEMPLATELOC), $buttonText);
     }
 
@@ -19,6 +18,7 @@ class PostForm {
     public function handlePost (DataBase $dataStorage, string $url) {
 
         $username = htmlspecialchars(print_r($_POST['username'], true));
+
         $text = print_r($_POST['message'], true);
         $threadId = is_int($this->_threadId) ? $this->_threadId : $dataStorage->getNextThreadId();
 
@@ -31,12 +31,12 @@ class PostForm {
                 $threadId,
                 $username ? $username : 'Anonymous',
             );
+
             if ($this->_threadId) {
                 $this->_checkForReplies($dataStorage, $newPost);
             }
             $newPost->text = htmlspecialchars($newPost->text);
             $dataStorage->appendNewPost($newPost);
-
         }
 
         header('Location: ' . $url, true, 303);
@@ -54,7 +54,7 @@ class PostForm {
 
     private function _checkForReplies(DataBase $dataStorage, Post $newPost): void {
         $regex = "/>>[0-9]+\b/";
-        preg_match_all($regex, htmlspecialchars_decode($newPost->text), $matches);
+        preg_match_all($regex, $newPost->text, $matches);
 
         foreach ($matches[0] as $needle) {
             $newPost->text = str_replace(
@@ -75,3 +75,4 @@ class PostForm {
     }
 
 }
+

@@ -13,12 +13,17 @@ if ($params['id']) {
 
 $dataStorage = new DataBase($DATABASECREDS);
 
-$pageTitle = "Frenchan - Thread #$currentThread";
+$pageTitle = "/uat thread #$currentThread - Frenchan";
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
 
-$cleanUrl = "http://$_SERVER[HTTP_HOST]";
+$cleanUrl = "..";
 echo "<a href=$cleanUrl>Back to board</a>";
 echo "<hr>";
+
+if (! in_array($currentThread, $dataStorage->getThreadListOrdByLastPost())) { 
+   echo "No such thread";
+   exit(1);
+}
 
 $postForm = new PostForm($currentThread);
 $postForm->renderForm($POSTFORMTEMPLATELOC);

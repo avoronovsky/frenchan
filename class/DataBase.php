@@ -37,6 +37,7 @@ class DataBase {
         $this->_conn->query($sql);
     }
 
+
     public function appendReply(Post $originalPost, Post $replyPost): void {
         $sql = "insert into Replies (post_id, reply_id)
         values ('$originalPost->id', '$replyPost->id')";
@@ -53,6 +54,7 @@ class DataBase {
         }
         return $replies;
     }
+
 
     public function getPostsByThreadId(int $threadId): array {
         $sql = "select * from Posts where thread_id=$threadId order by datetime asc";
