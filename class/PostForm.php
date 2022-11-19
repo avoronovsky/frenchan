@@ -18,12 +18,13 @@ class PostForm {
     public function handlePost (DataBase $dataStorage, string $url) {
 
         $username = htmlspecialchars(print_r($_POST['username'], true));
-        $text = htmlspecialchars(print_r($_POST['message'], true));
+
+        $text = print_r($_POST['message'], true);
         $threadId = is_int($this->_threadId) ? $this->_threadId : $dataStorage->getNextThreadId();
 
         if ($this->_isPostSane($text, $username)) {
 
-            $post = new Post(
+            $newPost = new Post(
                 $dataStorage->getNextPostId(),
                 $text,
                 date('Y.m.d H:i:s'),
@@ -31,7 +32,11 @@ class PostForm {
                 $username ? $username : 'Anonymous',
             );
 
-            $dataStorage->appendNewPost($post);
+            if ($this->_threadId) {
+                $this->_checkForReplies($dataStorage, $newPost);
+            }
+            $newPost->text = htmlspecialchars($newPost->text);
+            $dataStorage->appendNewPost($newPost);
         }
 
         header('Location: ' . $url, true, 303);
@@ -46,4 +51,28 @@ class PostForm {
         }
         return false;
     }
+
+    private function _checkForReplies(DataBase $dataStorage, Post $newPost): void {
+        $regex = "/>>[0-9]+\b/";
+        preg_match_all($regex, $newPost->text, $matches);
+
+        foreach ($matches[0] as $needle) {
+            $newPost->text = str_replace(
+                $needle,
+                "<a href=$ROOT/thread/?id=$this->_threadId#".substr($needle, 2).">$needle</a>",
+                $newPost->text,
+            );
+        }
+
+        $postIds = preg_filter("/>>/", "", $matches[0]);
+        foreach ($postIds as $postId) {
+            foreach ($dataStorage->getPostsByThreadId($this->_threadId) as $originalPost) {
+                if ($originalPost->id == intval($postId)) {
+                    $dataStorage->appendReply($originalPost, $newPost);
+                }
+            }
+        }
+    }
+
 }
+

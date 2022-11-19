@@ -1,4 +1,5 @@
 <?php
+
 include("./configs.php");
 include($POSTFORMCLASSLOC);
 include($THREADCLASSLOC);
@@ -13,6 +14,7 @@ parse_str($url_components['query'], $params);
 $currentPage = $params['page'] ? $params['page'] : 0;
 
 $dataStorage = new DataBase($DATABASECREDS);
+
 
 $pageTitle = "/uat - Frenchan";
 printf(file_get_contents($HEADTEMPLATELOC), $pageTitle);
