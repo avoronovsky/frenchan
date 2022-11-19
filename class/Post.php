@@ -28,7 +28,7 @@ class Post {
         if (sizeof($replies) != 0) {
             $replyAnchors = array();
             foreach ($replies as $reply) {
-                array_push($replyAnchors, "<a href='#$reply'>$reply</a>");
+                array_push($replyAnchors, "<a href='$ROOT/thread/?id=$this->threadId#$reply'>$reply</a>");
             }
             $replyStr = "Replies: " . implode(', ', $replyAnchors);
         }

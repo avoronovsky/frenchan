@@ -59,7 +59,7 @@ class PostForm {
         foreach ($matches[0] as $needle) {
             $newPost->text = str_replace(
                 $needle,
-                "<a href=#".substr($needle, 2).">$needle</a>",
+                "<a href=$ROOT/thread/?id=$this->_threadId#".substr($needle, 2).">$needle</a>",
                 $newPost->text,
             );
         }
