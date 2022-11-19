@@ -7,7 +7,7 @@ body
 {
 position:absolute;
 width: 80%;
-    border 1px solid red;
+    border: 1px solid red;
     font-size: 14px;
     background: url("assets/cc024358.jpg") left repeat-y, url("assets/gradient.png") 300px repeat-y, url("assets/bkgtile.gif") 600px repeat;
     background-size: 300px, auto, 20%;

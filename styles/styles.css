@@ -1,0 +1,26 @@
+table.post { 
+    table-layout:fixed;        
+    background-color: rgb(241, 241, 241); 
+    border-collapse: collapse;
+    margin-left: 10pt;
+    margin-right: 10pt;
+}
+table.post td { 
+    overflow: hidden; 
+    word-break:break-word; 
+}
+table.post th {  
+    text-align: left;
+}
+
+table.oppost {
+    table-layout:fixed;        
+    border-collapse: collapse;
+}
+table.oppost td { 
+    overflow: hidden; 
+    word-break:break-word; 
+}
+table.oppost th {  
+    text-align: left;
+}
