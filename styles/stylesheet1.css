@@ -1,0 +1,71 @@
+html
+{
+background-color: rgb (25, 70, 47)
+}
+
+body
+{
+position:absolute;
+width: 80%;
+    border: 1px solid red;
+    font-size: 14px;
+    background: url("assets/cc024358.jpg") left repeat-y, url("assets/gradient.png") 300px repeat-y, url("assets/bkgtile.gif") 600px repeat;
+    background-size: 300px, auto, 20%;
+    padding-left:350px;
+margin-right:350px;
+    color: rgb(40, 200, 195);
+    text-shadow: 10px rgb(40, 200, 195);
+}
+
+.usual
+{   
+
+    font-size: medium;
+    font-family: Basiic, 'Courier New';
+
+}		
+table
+{
+backdrop-filter: blur(2px);
+}	
+.input_image
+{
+position: absolute;
+width:10%;
+margin-left: 350px;    
+}
+
+form
+{
+margin-bottom: 35px;
+align-elements: center;
+}			
+
+hr
+{
+border: 1px dotted rgb(40, 200, 195);
+margin-right:350px;
+}
+
+.time
+{align-self:right;
+font-family: 000webfont;
+font-size: small;
+color: rgb (90, 120, 144);
+}
+
+.name{
+backdrop-filter: blur(2px);
+}
+
+.message
+{
+backdrop-filter: blur(2px);
+}
+
+a
+{
+font-size:large;
+color:red;
+}
+		
