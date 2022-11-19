@@ -37,6 +37,23 @@ class DataBase {
         $this->_conn->query($sql);
     }
 
+    public function appendReply(Post $originalPost, Post $replyPost): void {
+        $sql = "insert into Replies (post_id, reply_id)
+        values ('$originalPost->id', '$replyPost->id')";
+        $this->_conn->query($sql);
+    }
+
+    public function getReplies(Post $post): array {
+        $sql = "select reply_id from Replies where post_id=$post->id";
+        $postData = $this->_conn->query($sql);
+
+        $replies = array();
+        while($row = $postData->fetch_assoc()) {
+            array_push($replies, $row['reply_id']);
+        }
+        return $replies;
+    }
+
     public function getPostsByThreadId(int $threadId): array {
         $sql = "select * from Posts where thread_id=$threadId order by datetime asc";
         $postData = $this->_conn->query($sql);
@@ -48,7 +65,7 @@ class DataBase {
                 $row['text'],
                 $row['datetime'],
                 $row['thread_id'],
-                $row['username']
+                $row['username'],
             );
             array_push($posts, $post);
         }

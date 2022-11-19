@@ -1,4 +1,5 @@
 <?php
+
 class Post {
 
     public int $id;
@@ -20,8 +21,20 @@ class Post {
         $this->username = $username;
     }
 
-    public function renderPost($templateLoc, $postType = "post") {
+    public function renderPost($templateLoc, $replies, $postType = "post") {
         $template = file_get_contents($templateLoc);
-        printf($template, $postType, $this->dateTime, $this->id, $this->username, $this->text);
+
+        $replyStr = '';
+        if (sizeof($replies) != 0) {
+            $replyAnchors = array();
+            foreach ($replies as $reply) {
+                array_push($replyAnchors, "<a href='$ROOT/thread/?id=$this->threadId#$reply'>$reply</a>");
+            }
+            $replyStr = "Replies: " . implode(', ', $replyAnchors);
+        }
+
+        printf($template, $postType, 
+               $this->dateTime, $this->id, $this->id, $this->username, 
+               nl2br(htmlspecialchars_decode($this->text)), $replyStr);
     }
 }
