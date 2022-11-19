@@ -21,7 +21,7 @@ class Thread {
     public function renderShowcase(string $templateLoc): void {
         $nOfPosts = count($this->_threadPosts);
         if ($nOfPosts >= 1) {
-            $this->_threadPosts[0]->renderPost($templateLoc);
+            $this->_threadPosts[0]->renderPost($templateLoc, "oppost");
         }
         if ($nOfPosts >= 4) {
             $nOfMore = $nOfPosts - 3;
@@ -33,9 +33,9 @@ class Thread {
         if ($nOfPosts >= 2) {
             $this->_threadPosts[$nOfPosts-1]->renderPost($templateLoc);
         }
-        printf("<table><tr><th>
+        printf("
         <a href='thread/?id=%s'>Proceed to thread</a>
-        </th></tr></table>", 
+        ", 
         $this->_threadId);
         echo "<hr>";
     }

@@ -20,8 +20,8 @@ class Post {
         $this->username = $username;
     }
 
-    public function renderPost($templateLoc) {
+    public function renderPost($templateLoc, $postType = "post") {
         $template = file_get_contents($templateLoc);
-        printf($template, $this->id, $this->dateTime, $this->username, $this->text);
+        printf($template, $postType, $this->dateTime, $this->id, $this->username, $this->text);
     }
 }
