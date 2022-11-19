@@ -13,8 +13,10 @@ class Thread {
     }
 
     public function renderThread(string $templateLoc): void {
+        $postType = 'oppost';
         foreach ($this->_threadPosts as $post) {
-            $post->renderPost($templateLoc);
+            $post->renderPost($templateLoc, $postType);
+            $postType = 'post';
         }
     }
 
