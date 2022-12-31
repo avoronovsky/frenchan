@@ -47,7 +47,7 @@ class PostForm {
 
     private function _isPostSane($text, $username): bool {
         if (strlen($text) > 0 and strlen($text) < 2000 and strlen($username) < 32) {
-            return true;
+            return true and ctype_space($text);
         }
         return false;
     }
@@ -69,7 +69,7 @@ class PostForm {
             foreach ($dataStorage->getPostsByThreadId($this->_threadId) as $originalPost) {
                 if ($originalPost->id == intval($postId)) {
                     $dataStorage->appendReply($originalPost, $newPost);
-                }
+}
             }
         }
     }
