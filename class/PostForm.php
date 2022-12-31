@@ -47,7 +47,7 @@ class PostForm {
 
     private function _isPostSane($text, $username): bool {
         if (strlen($text) > 0 and strlen($text) < 2000 and strlen($username) < 32) {
-            return true and ctype_space($text);
+            return true and !ctype_space($text);
         }
         return false;
     }
